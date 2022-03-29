@@ -10,6 +10,7 @@ import styled from "styled-components";
 
 //Components
 import StarRating from "./StarRating";
+import Room from "./Room"
 
 type Props = {
     hotel: {
@@ -18,6 +19,7 @@ type Props = {
         address1: string,
         address2?:string,
         starRating: string,
+        id: string,
     },
 
     // setRating: (arg: number) => void,
@@ -33,38 +35,44 @@ const Hotel: FC<Props> = ({hotel}) => {
             <Card>
                 
                 <div className="hotelsData">
-                <SplideStyled
-                options={{
-                    perPage: 1,
-                    // arrows: false,
-                    // pagination: false,
-                    // drag: "free",
-                    // gap: "5rem",
-                  }}>
-                    {hotel.images.map((image) => {
-                        return(
-                            <SplideSlide>
-                                <img src={image.url} alt="" />
-                            </SplideSlide>
-                        );
-                    })}
-                </SplideStyled>
-
-                <div className="titles">
-                    <h2>{hotel.name}</h2>
-                    <p>{hotel.address1}</p>
-                    <p>{hotel.address2}</p>
-                </div>
-
-                <div className="rating">
-                    {[...Array(5)].map((star, i) => {
-                            const ratingValue = i + 1;
+                    <SplideStyled
+                    options={{
+                        perPage: 1,
+                        // arrows: false,
+                        // pagination: false,
+                        // drag: "free",
+                        // gap: "5rem",
+                    }}>
+                        {hotel.images.map((image) => {
                             return(
-                                <FaStar size={25} color={ratingValue <= parseInt(hotel.starRating) ? "#ffc107" : "#e4e5e9"}/>
-                            )
-                        })
-                    }
+                                <SplideSlide>
+                                    <img src={image.url} alt="" />
+                                </SplideSlide>
+                            );
+                        })}
+                    </SplideStyled>
+
+                    <div className="titles">
+                        <h1>{hotel.name}</h1>
+                        <p>{hotel.address1}</p>
+                        <p>{hotel.address2}</p>
+                    </div>
+
+                    <div className="rating">
+                        {[...Array(5)].map((star, i) => {
+                                const ratingValue = i + 1;
+                                return(
+                                    <FaStar size={25} color={ratingValue <= parseInt(hotel.starRating) ? "#ffc107" : "#e4e5e9"}/>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
+
+                <h2 className="roomsTitle">Available Rooms</h2>
+
+                <div className="hotelRooms">
+                    <Room id={hotel.id} />
                 </div>
                 
             </Card>
@@ -104,6 +112,12 @@ const Card = styled.div`
     position: absolute;
     top: 0;
     right: 0;
+  }
+
+  .roomsTitle {
+      display: flex;
+      width: 100%;
+      justify-content: center;
   }
 `;
 

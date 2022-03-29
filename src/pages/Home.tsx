@@ -38,6 +38,7 @@ const Home: FC<Props> = ({setRating, setHover, rating, hover}) => {
     address1: string,
     address2?:string,
     starRating: string,
+    id: string,
   };
 
   return(
