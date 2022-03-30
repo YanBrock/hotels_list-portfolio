@@ -27,7 +27,8 @@ const Filter: React.FC<Props> =
     setAdults, 
     adults, 
     setChildren, 
-    children}) => {
+    children,
+  }) => {
 
   return (
     <Wrapper>

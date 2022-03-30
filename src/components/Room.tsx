@@ -4,27 +4,48 @@ import styled from "styled-components";
 
 type Props = {
     id: string,
+    adults: number,
+    children: number,
 }
 
 interface Room {
     id: string,
     images: {url: string, alt: string,}[],
     name: string,
+    occupancy: {maxAdults: number, maxChildren: number, maxOverall: number},
     longDescription: string,
 }
 
-const Room: FC<Props> = ( {id} ) => {
+const Room: FC<Props> = ( {id, adults, children} ) => {
 
     const [rooms, setRooms] = useState([]);
     const [ratePlans, setRatePlans] = useState([]);
+    const [roomsByAdults, setRoomsByAdults] = useState([]);
+
 
     const getRooms = async () => {
         const api = await fetch(`https://obmng.dbm.guestline.net/api/roomRates/OBMNG/${id}`);
         const data = await api.json();
-        console.log(data);
+
         setRatePlans(data.ratePlans);
+        console.log(ratePlans);
+
         setRooms(data.rooms);
+        console.log(rooms);
+
+        setRoomsByAdults(data.rooms);
     }
+
+    const getFilteredRooms= async (adults: number, children: number) => {
+        const filteredRooms = rooms.filter((el: Room) => {
+          return (el.occupancy.maxAdults >= adults && el.occupancy.maxChildren >= children);
+        });
+        setRoomsByAdults(filteredRooms);
+      }
+
+    useEffect(() => {
+        getFilteredRooms(adults, children);
+    }, [adults, children]);
 
     useEffect(() => {
         getRooms();
@@ -32,31 +53,18 @@ const Room: FC<Props> = ( {id} ) => {
 
     return(
         <Wrapper>
-            {rooms.map((room: Room) => {
+            {roomsByAdults.map((room: Room) => {
                 return(
                     <div key={room.id} className="room">
                         
                         <div className="titles">
                             <h3>{room.name}</h3>
-                            <p>{room.longDescription}</p>
+                            <p>Adults: {room.occupancy.maxAdults}</p>
+                            <p>Children: {room.occupancy.maxChildren}</p>
                         </div>
 
-                        <div className="images">
-                            <SplideStyled
-                                options={{
-                                    perPage: 3,
-                                    arrows: false,
-                                    pagination: false,
-                                }}
-                            >
-                            {room.images.map((image) => {
-                                return(
-                                    <SplideSlide>
-                                        <img src={image.url} alt={image.alt} />
-                                    </SplideSlide>
-                                )
-                            })}
-                            </SplideStyled>
+                        <div className="description">
+                            <p>{room.longDescription}</p>
                         </div>
                         
                     </div>
@@ -69,15 +77,21 @@ const Room: FC<Props> = ( {id} ) => {
 const Wrapper = styled.div`
 
     .room {
-        // display: flex;
+        display: flex;
         border: solid 1px black;
         margin: 1rem 1rem;
         padding: .5rem;
-    }
+        height: 8rem;
 
-    .titles {
-        display: flex;
-        flex-direction: column;
+        .titles {
+            width: 30%;
+        }
+    
+        .description {
+            width: 70%;
+            max-height: 10rem;
+            overflow-y: scroll;
+        }
     }
 `;
 

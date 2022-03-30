@@ -26,9 +26,11 @@ type Props = {
     // setHover: (arg: number) => void,
     // rating: number,
     // hover: number,
+    adults: number,
+    children: number,
 }
 
-const Hotel: FC<Props> = ({hotel}) => {
+const Hotel: FC<Props> = ({hotel, adults, children}) => {
 
     return(
         <Wrapper>
@@ -53,7 +55,9 @@ const Hotel: FC<Props> = ({hotel}) => {
                     </SplideStyled>
 
                     <div className="titles">
-                        <h1>{hotel.name}</h1>
+                        <Link to={`/hotel-details/${hotel.name}`}>
+                            <h1>{hotel.name}</h1>
+                        </Link>
                         <p>{hotel.address1}</p>
                         <p>{hotel.address2}</p>
                     </div>
@@ -62,7 +66,7 @@ const Hotel: FC<Props> = ({hotel}) => {
                         {[...Array(5)].map((star, i) => {
                                 const ratingValue = i + 1;
                                 return(
-                                    <FaStar size={25} color={ratingValue <= parseInt(hotel.starRating) ? "#ffc107" : "#e4e5e9"}/>
+                                    <FaStar key={i} size={25} color={ratingValue <= parseInt(hotel.starRating) ? "#ffc107" : "#e4e5e9"}/>
                                 )
                             })
                         }
@@ -72,7 +76,11 @@ const Hotel: FC<Props> = ({hotel}) => {
                 <h2 className="roomsTitle">Available Rooms</h2>
 
                 <div className="hotelRooms">
-                    <Room id={hotel.id} />
+                    <Room 
+                        id={hotel.id}
+                        adults={adults}
+                        children={children}
+                    />
                 </div>
                 
             </Card>
@@ -96,6 +104,7 @@ const Card = styled.div`
   position: relative;
   margin: 0 0 1.5rem 0;
   border: solid 1px black;
+  
 
   .hotelsData {
     display: flex;
@@ -118,6 +127,12 @@ const Card = styled.div`
       display: flex;
       width: 100%;
       justify-content: center;
+  }
+
+  .hotelRooms {
+    height: 100%;
+    max-height: 20rem;
+    overflow-y: scroll;
   }
 `;
 

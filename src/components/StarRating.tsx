@@ -17,7 +17,7 @@ const StarRating: React.FC<Props> = ({ setRating, setHover, rating, hover }) => 
         const ratingValue = i + 1;
 
         return(
-          <label>
+          <label key={i}>
             <Input
               type="radio"
               name="rating"

@@ -2,57 +2,74 @@ import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Splide, SplideSlide} from "@splidejs/react-splide";
 import '@splidejs/splide/dist/css/splide.min.css';
-import { Link } from "react-router-dom";
+import { BrowserRouter, Link } from "react-router-dom";
 import Hotel from "../components/Hotel";
 
-interface Props {
-  setRating: (arg: number) => void,
-  setHover: (arg: number) => void,
+type Props = {
+  // setRating: (arg: number) => void,
+  // setHover: (arg: number) => void,
   rating: number,
-  hover: number,
-  setAdults: (arg: number) => void,
+  // hover: number,
+  // setAdults: (arg: number) => void,
   adults: number,
-  setChildren: (arg: number) => void,
+  // setChildren: (arg: number) => void,
   children: number,
-}
+};
 
-const Home: FC<Props> = ({setRating, setHover, rating, hover}) => {
+interface Hotel {
+  images: [ image: {url: string}, ],
+  name: string,
+  address1: string,
+  address2?:string,
+  starRating: string,
+  id: string,
+};
+
+const Home: FC<Props> = ({rating, adults, children}) => {
 
   const [allHotels, setAllHotels] = useState([]);
-  const [filteredHotels, setFilteredHotels] = useState([]);
+  const [hotelsByRating, setHotelsByRating] = useState([]);
 
   const getHotels = async () => {
-      const api = await fetch("https://obmng.dbm.guestline.net/api/hotels?collection-id=OBMNG");
-      const data = await api.json();
-      console.log(data);
-      setAllHotels(data);
+    const api = await fetch("https://obmng.dbm.guestline.net/api/hotels?collection-id=OBMNG");
+    const data = await api.json();
+    // console.log(data);
+    setAllHotels(data);
+    setHotelsByRating(data);
+  }
+
+  const getHotestByRating = async (rating: number) => {
+    const hotels = allHotels.filter((el: Hotel) => {
+      return parseInt(el.starRating) >= rating;
+    });
+    setHotelsByRating(hotels);
   }
 
   useEffect(() => {
-      getHotels();
-  }, []);
+    getHotestByRating(rating);
+  }, [rating])
 
-  type Hotel = {
-    images: [ image: {url: string}, ],
-    name: string,
-    address1: string,
-    address2?:string,
-    starRating: string,
-    id: string,
-  };
+  useEffect(() => {
+    getHotels();
+  }, []);
 
   return(
     <div>
-        {allHotels.map((hotel: Hotel) => {
-          console.log(hotel);
+        {hotelsByRating.map((hotel: Hotel) => {
+          // console.log(hotel);
             return(
-              <Hotel
-                hotel={hotel}
-                // setRating={setRating}
-                // setHover={setHover}
-                // rating={rating}
-                // hover={hover}
-              />
+              <BrowserRouter>
+                <Hotel
+                  key={hotel.id}
+                  hotel={hotel}
+                  // setRating={setRating}
+                  // setHover={setHover}
+                  // rating={rating}
+                  // hover={hover}
+                  adults={adults}
+                  children={children}
+                />
+              </BrowserRouter>
             );
         })}
     </div>

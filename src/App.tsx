@@ -33,13 +33,13 @@ const App: React.FC = () => {
       />
 
       <Home
-        setRating={setRating}
-        setHover={setHover}
+        // setRating={setRating}
+        // setHover={setHover}
         rating={rating}
-        hover={hover}
-        setAdults={setAdults}
+        // hover={hover}
+        // setAdults={setAdults}
         adults={adults}
-        setChildren={setChildren}
+        // setChildren={setChildren}
         children={children}
       />
     </div>
