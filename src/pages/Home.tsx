@@ -1,31 +1,37 @@
 import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Splide, SplideSlide} from "@splidejs/react-splide";
-import '@splidejs/splide/dist/css/splide.min.css';
-import { BrowserRouter, Link } from "react-router-dom";
 import Hotel from "../components/Hotel";
 
+//Interface
+import HotelInterface from "../interfaces/HotelInterface"
+
 type Props = {
-  // setRating: (arg: number) => void,
-  // setHover: (arg: number) => void,
   rating: number,
-  // hover: number,
-  // setAdults: (arg: number) => void,
   adults: number,
-  // setChildren: (arg: number) => void,
   children: number,
+  setSelectedHotel: (arg: object) => void,
+  setRooms: (arg: object) => void,
+  rooms: any;
+  setSelectedRoom: any,
+  // selectedRoom: any,
+  setRatePlans: (arg: object) => void,
+  setRoomsByOccupancy: (arg: object) => void,
+  roomsByOccupancy: any,
 };
 
-interface Hotel {
-  images: [ image: {url: string}, ],
-  name: string,
-  address1: string,
-  address2?:string,
-  starRating: string,
-  id: string,
-};
-
-const Home: FC<Props> = ({rating, adults, children}) => {
+const Home: FC<Props> = ({
+  rating,
+  adults,
+  children,
+  setSelectedHotel,
+  setRooms,
+  rooms,
+  setSelectedRoom,
+  // selectedRoom,
+  setRatePlans,
+  setRoomsByOccupancy,
+  roomsByOccupancy,
+}) => {
 
   const [allHotels, setAllHotels] = useState([]);
   const [hotelsByRating, setHotelsByRating] = useState([]);
@@ -39,7 +45,7 @@ const Home: FC<Props> = ({rating, adults, children}) => {
   }
 
   const getHotestByRating = async (rating: number) => {
-    const hotels = allHotels.filter((el: Hotel) => {
+    const hotels = allHotels.filter((el: HotelInterface) => {
       return parseInt(el.starRating) >= rating;
     });
     setHotelsByRating(hotels);
@@ -55,21 +61,23 @@ const Home: FC<Props> = ({rating, adults, children}) => {
 
   return(
     <div>
-        {hotelsByRating.map((hotel: Hotel) => {
+        {hotelsByRating.map((hotel: HotelInterface) => {
           // console.log(hotel);
             return(
-              <BrowserRouter>
                 <Hotel
                   key={hotel.id}
                   hotel={hotel}
-                  // setRating={setRating}
-                  // setHover={setHover}
-                  // rating={rating}
-                  // hover={hover}
                   adults={adults}
                   children={children}
+                  setSelectedHotel={setSelectedHotel}
+                  setRooms={setRooms}
+                  rooms={rooms}
+                  setSelectedRoom={setSelectedRoom}
+                  // selectedRoom={selectedRoom}
+                  setRatePlans={setRatePlans}
+                  setRoomsByOccupancy={setRoomsByOccupancy}
+                  roomsByOccupancy={roomsByOccupancy}
                 />
-              </BrowserRouter>
             );
         })}
     </div>

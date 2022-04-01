@@ -1,5 +1,6 @@
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import { FC } from "react";
+import '@splidejs/splide/dist/css/splide.min.css';
+import { FC, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 //Materials
@@ -9,45 +10,80 @@ import { FaStar } from "react-icons/fa";
 import styled from "styled-components";
 
 //Components
-import StarRating from "./StarRating";
 import Room from "./Room"
 
-type Props = {
-    hotel: {
-        images: [ image: {url: string}, ],
-        name: string,
-        address1: string,
-        address2?:string,
-        starRating: string,
-        id: string,
-    },
+//Interface
+import HotelInterface from "../interfaces/HotelInterface"
 
-    // setRating: (arg: number) => void,
-    // setHover: (arg: number) => void,
-    // rating: number,
-    // hover: number,
+type Props = {
+    hotel: HotelInterface,
     adults: number,
     children: number,
+    setSelectedHotel: (arg: object) => void,
+    setRooms: (arg: object) => void,
+    rooms: any;
+    setSelectedRoom: any,
+    // selectedRoom: any,
+    setRatePlans: (arg: object) => void,
+    setRoomsByOccupancy: (arg: object) => void,
+    roomsByOccupancy: any,
 }
 
-const Hotel: FC<Props> = ({hotel, adults, children}) => {
+const Hotel: FC<Props> = ({
+    hotel,
+    adults,
+    children,
+    setSelectedHotel,
+    setRooms,
+    rooms,
+    setSelectedRoom,
+    // selectedRoom,
+    setRatePlans,
+    setRoomsByOccupancy,
+    roomsByOccupancy,
+}) => {
+
+    const getRooms = async () => {
+        const api = await fetch(`https://obmng.dbm.guestline.net/api/roomRates/OBMNG/${hotel.id}`);
+        const data = await api.json();
+        setRatePlans(data.ratePlans);
+        setRooms(data.rooms);
+        setRoomsByOccupancy(data.rooms);
+
+        console.log(data);
+    }
+
+    const getFilteredRooms= async (adults: number, children: number) => {
+        const filteredRooms = rooms.filter((el: Room) => {
+          return (el.occupancy.maxAdults >= adults && el.occupancy.maxChildren >= children);
+        });
+        setRoomsByOccupancy(filteredRooms);
+      }
+
+    useEffect(() => {
+        getFilteredRooms(adults, children);
+    }, [adults, children]);
+
+    useEffect(() => {
+        getRooms();
+    }, []);
 
     return(
         <Wrapper>
             <Card>
-                
                 <div className="hotelsData">
                     <SplideStyled
-                    options={{
-                        perPage: 1,
-                        // arrows: false,
-                        // pagination: false,
-                        // drag: "free",
-                        // gap: "5rem",
-                    }}>
+                        options={{
+                            perPage: 1,
+                            // arrows: false,
+                            // pagination: false,
+                            // drag: "free",
+                            // gap: "5rem",
+                        }}
+                    >
                         {hotel.images.map((image) => {
                             return(
-                                <SplideSlide>
+                                <SplideSlide key={image.url}>
                                     <img src={image.url} alt="" />
                                 </SplideSlide>
                             );
@@ -55,9 +91,12 @@ const Hotel: FC<Props> = ({hotel, adults, children}) => {
                     </SplideStyled>
 
                     <div className="titles">
-                        <Link to={`/hotel-details/${hotel.name}`}>
+                        <LinkStyled 
+                            to={`/hotel-details/${hotel.id}`} 
+                            onClick={() => setSelectedHotel(hotel)}
+                        >
                             <h1>{hotel.name}</h1>
-                        </Link>
+                        </LinkStyled>
                         <p>{hotel.address1}</p>
                         <p>{hotel.address2}</p>
                     </div>
@@ -66,7 +105,11 @@ const Hotel: FC<Props> = ({hotel, adults, children}) => {
                         {[...Array(5)].map((star, i) => {
                                 const ratingValue = i + 1;
                                 return(
-                                    <FaStar key={i} size={25} color={ratingValue <= parseInt(hotel.starRating) ? "#ffc107" : "#e4e5e9"}/>
+                                    <FaStar 
+                                        key={i} 
+                                        size={25} 
+                                        color={ratingValue <= parseInt(hotel.starRating) ? "#ffc107" : "#e4e5e9"}
+                                    />
                                 )
                             })
                         }
@@ -76,13 +119,21 @@ const Hotel: FC<Props> = ({hotel, adults, children}) => {
                 <h2 className="roomsTitle">Available Rooms</h2>
 
                 <div className="hotelRooms">
-                    <Room 
-                        id={hotel.id}
-                        adults={adults}
-                        children={children}
-                    />
+                    {roomsByOccupancy.map((room: Room) => {
+                        return(
+                            <LinkStyled to={`/room-details/${room.id}`} onClick={() => setSelectedRoom(room)}>
+                                <Room 
+                                    id={room.id}
+                                    name={room.name}
+                                    occupancy={room.occupancy}
+                                    longDescription={room.longDescription}
+                                    // roomsByOccupancy={roomsByOccupancy}
+                                />
+                            </LinkStyled>
+                            
+                        )
+                    })}
                 </div>
-                
             </Card>
         </Wrapper>
     );
