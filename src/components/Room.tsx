@@ -8,27 +8,18 @@ type Props = {
     name: string,
     occupancy: {maxAdults: number, maxChildren: number},
     longDescription: string,
-    // roomsByOccupancy: any,
+    disabledAccess: boolean,
 }
 
-interface Room {
-    id: string,
-    images?: {url: string, alt: string,}[],
-    name: string,
-    occupancy: {maxAdults: number, maxChildren: number, maxOverall: number},
-    longDescription: string,
-}
-
-const Room: FC<Props> = ( {id, name, occupancy, longDescription} ) => {
-
+const Room: FC<Props> = ( {id, name, occupancy, longDescription, disabledAccess} ) => {
     return(
         <Wrapper>
-            
-            <div key={id} className="room">
+            <div className="availability">{disabledAccess ? "available" : "unavailable"}</div>
+            <div key={id} className="room" style={{background: `${disabledAccess ? "#97d179" : "#faacac"}`}}>
                 
                 <div className="titles">
                     <h3>{name}</h3>
-                    <p>Adults: {occupancy.maxAdults}</p>
+                    <p className="adults">Adults: {occupancy.maxAdults}</p>
                     <p>Children: {occupancy.maxChildren}</p>
                 </div>
 
@@ -43,16 +34,35 @@ const Room: FC<Props> = ( {id, name, occupancy, longDescription} ) => {
 };
 
 const Wrapper = styled.div`
+    position: relative;
+
+    .availability {
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+    }
 
     .room {
         display: flex;
-        border: solid 1px black;
-        margin: 1rem 1rem;
         padding: .5rem;
         height: 8rem;
+        border-radius: 3px;
+        margin-bottom: 1rem;
+
+        &:hover{
+            box-shadow: 0px 3px 10px gray;
+        }
 
         .titles {
             width: 30%;
+
+            h3 {
+                margin-bottom: .5rem;
+            }
+    
+            p.adults{
+                margin-bottom: .5rem;
+            }
         }
     
         .description {

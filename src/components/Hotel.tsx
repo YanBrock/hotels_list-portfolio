@@ -14,19 +14,19 @@ import Room from "./Room"
 
 //Interface
 import HotelInterface from "../interfaces/HotelInterface"
+import RoomInterface from "../interfaces/RoomInterface";
 
 type Props = {
     hotel: HotelInterface,
     adults: number,
     children: number,
-    setSelectedHotel: (arg: object) => void,
-    setRooms: (arg: object) => void,
-    rooms: any;
-    setSelectedRoom: any,
-    // selectedRoom: any,
+    setSelectedHotel: (arg: HotelInterface) => void,
+    setRooms: (arg: RoomInterface[]) => void,
+    rooms: RoomInterface[];
+    setSelectedRoom: (arg: RoomInterface) => void,
     setRatePlans: (arg: object) => void,
-    setRoomsByOccupancy: (arg: object) => void,
-    roomsByOccupancy: any,
+    setRoomsByOccupancy: (arg: RoomInterface[]) => void,
+    roomsByOccupancy: RoomInterface[],
 }
 
 const Hotel: FC<Props> = ({
@@ -54,7 +54,7 @@ const Hotel: FC<Props> = ({
     }
 
     const getFilteredRooms= async (adults: number, children: number) => {
-        const filteredRooms = rooms.filter((el: Room) => {
+        const filteredRooms = rooms.filter((el: RoomInterface) => {
           return (el.occupancy.maxAdults >= adults && el.occupancy.maxChildren >= children);
         });
         setRoomsByOccupancy(filteredRooms);
@@ -75,7 +75,7 @@ const Hotel: FC<Props> = ({
                     <SplideStyled
                         options={{
                             perPage: 1,
-                            // arrows: false,
+                            arrows: hotel.images.length > 1 ? true : false,
                             // pagination: false,
                             // drag: "free",
                             // gap: "5rem",
@@ -97,7 +97,7 @@ const Hotel: FC<Props> = ({
                         >
                             <h1>{hotel.name}</h1>
                         </LinkStyled>
-                        <p>{hotel.address1}</p>
+                        <p className="ad1">{hotel.address1}</p>
                         <p>{hotel.address2}</p>
                     </div>
 
@@ -116,10 +116,10 @@ const Hotel: FC<Props> = ({
                     </div>
                 </div>
 
-                <h2 className="roomsTitle">Available Rooms</h2>
+                {/* <h2 className="roomsTitle">Available Rooms</h2> */}
 
                 <div className="hotelRooms">
-                    {roomsByOccupancy.map((room: Room) => {
+                    {roomsByOccupancy.map((room: RoomInterface) => {
                         return(
                             <LinkStyled to={`/room-details/${room.id}`} onClick={() => setSelectedRoom(room)}>
                                 <Room 
@@ -127,10 +127,9 @@ const Hotel: FC<Props> = ({
                                     name={room.name}
                                     occupancy={room.occupancy}
                                     longDescription={room.longDescription}
-                                    // roomsByOccupancy={roomsByOccupancy}
+                                    disabledAccess={room.disabledAccess}
                                 />
                             </LinkStyled>
-                            
                         )
                     })}
                 </div>
@@ -140,51 +139,69 @@ const Hotel: FC<Props> = ({
 };
 
 const Wrapper = styled.div`
-  margin: 4rem 0;
+  margin: 2rem 0;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0px 3px 10px gray;
+  padding: 1rem;
 `;
 
 const Card = styled.div`
-  min-height: 30rem;
-  width: 50rem;
-  border-radius: 3px; 
-  overflow: hidden;
-  position: relative;
-  margin: 0 0 1.5rem 0;
-  border: solid 1px black;
-  
-
-  .hotelsData {
     display: flex;
-  }
-  
-  img {
-    width: 15rem;
-    height: 10rem;
-    object-fit: cover;
-  }
+    flex-direction: column;
+    min-height: 30rem;
+    width: 70rem;
+    border-radius: 3px; 
+    overflow: hidden;
+    position: relative;  
 
-  .rating {
-    margin: 1rem 1rem 0 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
+    .hotelsData {
+        display: flex;
+        height: 30%;
+        padding-bottom: 1rem;
+        box-shadow: 0px 6px 10px gray;
+        z-index: 3;
 
-  .roomsTitle {
-      display: flex;
-      width: 100%;
-      justify-content: center;
-  }
+        img {
+            width: 15rem;
+            height: 10rem;
+            object-fit: cover;
+        }
+    
+        .titles {
+            h1 {
+                margin-bottom: .5rem;
+            }
+    
+            p.ad1{
+                margin-bottom: .5rem;
+            }
+        }
+    
+        .rating {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
 
-  .hotelRooms {
-    height: 100%;
-    max-height: 20rem;
-    overflow-y: scroll;
-  }
+    // .roomsTitle {
+    //     display: flex;
+    //     width: 100%;
+    //     justify-content: center;
+    // }
+
+    .hotelRooms {
+        height: 70%;
+        max-height: 20rem;
+        overflow-y: scroll;
+        box-shadow: inset 1px 0px 6px gray, inset -1px -1px 6px gray;
+        padding: 1rem .5rem .5rem .5rem;
+    }
 `;
 
 const LinkStyled = styled(Link)`
@@ -194,7 +211,7 @@ const LinkStyled = styled(Link)`
 
 const SplideStyled = styled(Splide)`
   max-width: 15rem;
-  margin: 1rem 1rem 0 1rem;
+  margin-right: 1rem;
 `;
 
 export default Hotel;

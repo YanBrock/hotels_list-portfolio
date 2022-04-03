@@ -8,24 +8,22 @@ import RoomDetails from "./RoomDetails";
 
 //Interface
 import HotelInterface from "../interfaces/HotelInterface"
+import RoomInterface from "../interfaces/RoomInterface";
 
 type Props = {
     rating: number,
     adults: number,
     children: number,
-    setSelectedHotel: (arg: object) => void,
+    setSelectedHotel: (arg: HotelInterface) => void,
     selectedHotel: HotelInterface,
-    // setRooms: (arg: object) => void,
-    setRooms: any,
-    rooms: any,
-    setSelectedRoom: any,
-    selectedRoom: any,
-    // setRatePlans: (arg: object) => void,
+    setRooms: (arg: RoomInterface[]) => void,
+    rooms: RoomInterface[],
+    setSelectedRoom: (arg: RoomInterface) => void,
+    selectedRoom: RoomInterface,
     setRatePlans: any,
     ratePlans: any,
-    // setRoomsByOccupancy: (arg: object) => void,
-    setRoomsByOccupancy: any,
-    roomsByOccupancy: any,
+    setRoomsByOccupancy: (arg: RoomInterface[]) => void,
+    roomsByOccupancy: RoomInterface[],
 }
 
 const Pages: FC<Props> = ({
@@ -62,7 +60,6 @@ const Pages: FC<Props> = ({
                             setRoomsByOccupancy={setRoomsByOccupancy}
                             roomsByOccupancy={roomsByOccupancy}
                             setSelectedRoom={setSelectedRoom}
-                            // selectedRoom={selectedRoom}
                         />
                     } 
                 />
@@ -73,7 +70,6 @@ const Pages: FC<Props> = ({
                         <HotelDetails
                             selectedHotel={selectedHotel}
                             setSelectedRoom={setSelectedRoom}
-                            selectedRoom={selectedRoom}
                             roomsByOccupancy={roomsByOccupancy}
                         />}
                     />

@@ -76,9 +76,13 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: solid 1px black;
   border-radius: 3px;
-  padding: .5rem
+  background-color: #FFF;
+  padding: .5rem;
+  position: absolute;
+  top: 85%;
+  left: 30%;
+  // background-image: url("../../assets/images/filterBG.jpeg");
 `;
 
 export default Filter;

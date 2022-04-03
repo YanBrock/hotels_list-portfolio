@@ -9,15 +9,15 @@ import Room from "../components/Room";
 
 //Interface
 import HotelInterface from "../interfaces/HotelInterface"
+import RoomInterface from "../interfaces/RoomInterface";
 
 type Props = {
     selectedHotel: HotelInterface,
-    selectedRoom: any,
-    roomsByOccupancy: any,
-    setSelectedRoom: any,
+    roomsByOccupancy: RoomInterface[],
+    setSelectedRoom: (arg: RoomInterface) => void,
 };
 
-const HotelDetails: FC<Props> = ({ selectedHotel, selectedRoom, roomsByOccupancy, setSelectedRoom }) => {
+const HotelDetails: FC<Props> = ({ selectedHotel, roomsByOccupancy, setSelectedRoom }) => {
 
     console.log(selectedHotel);
 
@@ -42,11 +42,11 @@ const HotelDetails: FC<Props> = ({ selectedHotel, selectedRoom, roomsByOccupancy
                     }
                 </div>
             </div>
-
+        <div className="mainWrapper">
             <SplideStyled
                 options={{
                     perPage: 1,
-                    // arrows: false,
+                    arrows: selectedHotel.images.length > 1 ? true : false,
                     // pagination: false,
                     // drag: "free",
                     // gap: "5rem",
@@ -62,7 +62,7 @@ const HotelDetails: FC<Props> = ({ selectedHotel, selectedRoom, roomsByOccupancy
                 
             </SplideStyled>
 
-            <div className="hotelsData">
+            <div className="hotelData">
                 <h3>About {selectedHotel.name}:</h3>
                 <div className="description">{selectedHotel.description}</div>
                 <h3>Facilities:</h3>
@@ -98,7 +98,7 @@ const HotelDetails: FC<Props> = ({ selectedHotel, selectedRoom, roomsByOccupancy
                 <h3>Rooms</h3>
                 
                 <div className="hotelRooms">
-                    {roomsByOccupancy.map((room: Room) => {
+                    {roomsByOccupancy.map((room: RoomInterface) => {
                         return(
                             <LinkStyled to={`/room-details/${room.id}`} onClick={() => setSelectedRoom(room)}>
                                 <Room
@@ -106,13 +106,14 @@ const HotelDetails: FC<Props> = ({ selectedHotel, selectedRoom, roomsByOccupancy
                                     name={room.name}
                                     occupancy={room.occupancy}
                                     longDescription={room.longDescription}
-                                    // roomsByOccupancy={roomsByOccupancy}
+                                    disabledAccess={room.disabledAccess}
                                 />
                             </LinkStyled>
                             
                         )
                     })}
                 </div>
+            </div>
             </div>
         </Wrapper>
     );
@@ -136,9 +137,14 @@ const Wrapper = styled.div`
         }
     }
 
-    .hotelsData {
+    .mainWrapper {
+        display: flex;
+    }
+
+    .hotelData {
         display: flex;
         flex-direction: column;
+        width: 40%;
 
         .description {
             margin: 0 0 1rem 0;
@@ -175,7 +181,7 @@ const SplideStyled = styled(Splide)`
     display: flex;
     justify-contenr: center;
     align-items: center;
-    max-width: 80%;
+    max-width: 60%;
     margin: o auto;
 `;
 

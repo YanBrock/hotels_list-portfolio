@@ -23,3 +23,7 @@ code {
   flex-direction: column;
   align-items: center;
 }
+
+.gradient {
+  background: linear-gradient(#ffffff, #bfbfbf);
+}

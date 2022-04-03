@@ -4,19 +4,19 @@ import Hotel from "../components/Hotel";
 
 //Interface
 import HotelInterface from "../interfaces/HotelInterface"
+import RoomsInterface from "../interfaces/RoomInterface"
 
 type Props = {
   rating: number,
   adults: number,
   children: number,
-  setSelectedHotel: (arg: object) => void,
-  setRooms: (arg: object) => void,
-  rooms: any;
-  setSelectedRoom: any,
-  // selectedRoom: any,
+  setSelectedHotel: (arg: HotelInterface) => void,
+  setRooms: (arg: RoomsInterface[]) => void,
+  rooms: RoomsInterface[];
+  setSelectedRoom: (arg: RoomsInterface) => void,
   setRatePlans: (arg: object) => void,
-  setRoomsByOccupancy: (arg: object) => void,
-  roomsByOccupancy: any,
+  setRoomsByOccupancy: (arg: RoomsInterface[]) => void,
+  roomsByOccupancy: RoomsInterface[],
 };
 
 const Home: FC<Props> = ({
@@ -27,7 +27,6 @@ const Home: FC<Props> = ({
   setRooms,
   rooms,
   setSelectedRoom,
-  // selectedRoom,
   setRatePlans,
   setRoomsByOccupancy,
   roomsByOccupancy,
@@ -73,7 +72,6 @@ const Home: FC<Props> = ({
                   setRooms={setRooms}
                   rooms={rooms}
                   setSelectedRoom={setSelectedRoom}
-                  // selectedRoom={selectedRoom}
                   setRatePlans={setRatePlans}
                   setRoomsByOccupancy={setRoomsByOccupancy}
                   roomsByOccupancy={roomsByOccupancy}
@@ -83,13 +81,5 @@ const Home: FC<Props> = ({
     </div>
   );
 };
-
-const Gradient = styled.div`
-  z-index: 3;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5));
-`;
 
 export default Home;

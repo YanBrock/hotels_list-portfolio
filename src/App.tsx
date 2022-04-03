@@ -5,9 +5,11 @@ import { BrowserRouter } from 'react-router-dom';
 import Pages from "./pages/Pages"
 import Filter from './components/Filter';
 import Header from './components/Header';
+import Footer from "./components/Footer"
 
 //Interface
 import HotelInterface from "./interfaces/HotelInterface"
+import RoomInterface from './interfaces/RoomInterface';
 
 //Styles
 import styled from 'styled-components';
@@ -18,17 +20,16 @@ const App: React.FC = () => {
   const [hover, setHover] = useState<number>(0);
   const [adults, setAdults] = useState<number>(0);
   const [children, setChildren] = useState<number>(0);
-  const [selectedHotel, setSelectedHotel] = useState<any>({});
-  const [rooms, setRooms] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState<any>({})
+  const [selectedHotel, setSelectedHotel] = useState<any>();
+  const [rooms, setRooms] = useState<RoomInterface[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState<any>();
   const [ratePlans, setRatePlans] = useState([]);
-  const [roomsByOccupancy, setRoomsByOccupancy] = useState<any>([]);
+  const [roomsByOccupancy, setRoomsByOccupancy] = useState<RoomInterface[]>([]);
 
   return (
-    <div className="App">
+    <div className="App gradient">
       <BrowserRouter>
-        <Header />
-        <Filter
+        <Header
           setRating={setRating}
           setHover={setHover}
           rating={rating}
@@ -54,19 +55,18 @@ const App: React.FC = () => {
           setRoomsByOccupancy={setRoomsByOccupancy}
           roomsByOccupancy={roomsByOccupancy}
         />
+
+        <Footer />
       </BrowserRouter>
     </div>
   );
 };
 
-const HeaderSyled = styled(Header)`
-  position: relative;
-`;
-
-const FilterStyled = styled(Filter)`
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-`;
+// const Gradient = styled.div`
+//   z-index: 3;
+//   position: absolute;
+//   width: 100%;
+//   height: 100%;
+// `;
 
 export default App;
