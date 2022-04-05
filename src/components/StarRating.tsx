@@ -1,15 +1,15 @@
-import React from "react";
+import { FC, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import styled from "styled-components"
 
 type Props = {
   setRating: (arg: number) => void,
-  setHover: (arg: number) => void,
   rating: number,
-  hover: number,
 }
 
-const StarRating: React.FC<Props> = ({ setRating, setHover, rating, hover }) => {
+const StarRating: FC<Props> = ({ setRating, rating }) => {
+
+  const [hover, setHover] = useState<number>(0);
 
   return(
     <div>

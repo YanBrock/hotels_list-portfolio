@@ -9,13 +9,31 @@ type Props = {
     occupancy: {maxAdults: number, maxChildren: number},
     longDescription: string,
     disabledAccess: boolean,
+    selectedRatePlans: any,
 }
 
-const Room: FC<Props> = ( {id, name, occupancy, longDescription, disabledAccess} ) => {
+
+const Room: FC<Props> = ( {id, name, occupancy, longDescription, disabledAccess, selectedRatePlans} ) => {
+console.log(selectedRatePlans);
+
     return(
         <Wrapper>
-            <div className="availability">{disabledAccess ? "available" : "unavailable"}</div>
-            <div key={id} className="room" style={{background: `${disabledAccess ? "#97d179" : "#faacac"}`}}>
+            {/* <div>
+                 rate plan ID: {selectedRatePlans.id}
+            </div> */}
+
+            <div
+                className="availability"
+                style={{color: `${disabledAccess ? "green" : "red"}`}}
+            >
+                {disabledAccess ? "available" : "unavailable"}
+            </div>
+
+            <div
+                key={id}
+                className="room"
+                style={{background: `${disabledAccess ? "#97d179" : "#faacac"}`}}
+            >
                 
                 <div className="titles">
                     <h3>{name}</h3>
@@ -66,7 +84,7 @@ const Wrapper = styled.div`
         }
     
         .description {
-            width: 70%;
+            width: 60%;
             max-height: 10rem;
             overflow-y: scroll;
         }

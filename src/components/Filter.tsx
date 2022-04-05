@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC, useState } from 'react';
 import Button from "@material-ui/core/Button"
 
 //Components
@@ -9,62 +9,43 @@ import styled from "styled-components"
 
 type Props = {
   setRating: (arg: number) => void;
-  setHover: (arg: number) => void;
   rating: number;
-  hover: number;
   setAdults: (arg: number) => void;
   adults: number;
   setChildren: (arg: number) => void;
   children: number;
 };
 
-const Filter: React.FC<Props> = 
+const Filter: FC<Props> = 
   ({
     setRating, 
-    setHover, 
-    rating, 
-    hover, 
+    rating,
     setAdults, 
     adults, 
     setChildren, 
     children,
   }) => {
 
+
   return (
     <Wrapper>
         <StarRating
           setRating={setRating}
-          setHover={setHover}
           rating={rating}
-          hover={hover}
         />
 
         <div className="adults">
-          Adults
-          <Button
-            onClick={() => {
-                if(adults > 0) {
-                  setAdults(--adults)
-                };
-              }
-            }
-          >-</Button>
-            {adults}
-          <Button onClick={() => setAdults(++adults)}>+</Button>
+          <span>Adults</span>
+          <Button className="minus" onClick={ () => adults > 0 ? setAdults(--adults) : null }>-</Button>
+          <span>{adults}</span>
+          <Button className="plus" onClick={ () => setAdults(++adults) }>+</Button>
         </div>
 
         <div className="children">
-        Children
-          <Button
-            onClick={() => {
-                if(children > 0) {
-                  setChildren(--children)
-                };
-              }
-            }
-          >-</Button>
-            {children}
-          <Button onClick={() => setChildren(++children)}>+</Button>
+          <span>Children</span>
+          <Button onClick={ () => children > 0 ? setChildren(--children) : null }>-</Button>
+          <span>{children}</span>
+          <Button onClick={ () => setChildren(++children) }>+</Button>
         </div>
     </Wrapper>
   );

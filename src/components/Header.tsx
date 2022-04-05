@@ -6,35 +6,38 @@ import styled from "styled-components";
 //Components
 import Filter from "./Filter";
 
+import HotelInterface from "../interfaces/HotelInterface"
+
 type Props = {
     setRating: (arg: number) => void;
-    setHover: (arg: number) => void;
     rating: number;
-    hover: number;
     setAdults: (arg: number) => void;
     adults: number;
     setChildren: (arg: number) => void;
     children: number;
+    selectedHotel: HotelInterface;
 }
 
 const Header: FC<Props> = ({
-    setRating, 
-    setHover, 
+    setRating,  
     rating, 
-    hover, 
     setAdults, 
     adults, 
     setChildren, 
     children,
+    selectedHotel,
 }) => {
 
     return(
         <Wrapper>
+            {/* {selectedHotel.images.map((image) => {
+                return (
+                    <img src={image.url} alt="Image" />
+                )
+            })} */}
             <Filter
                 setRating={setRating}
-                setHover={setHover}
                 rating={rating}
-                hover={hover}
                 setAdults={setAdults}
                 adults={adults}
                 setChildren={setChildren}

@@ -13,33 +13,29 @@ import RoomInterface from "../interfaces/RoomInterface";
 type Props = {
     rating: number,
     adults: number,
+    setAdults: (arg: number) => void,
     children: number,
+    setChildren: (arg: number) => void;
     setSelectedHotel: (arg: HotelInterface) => void,
     selectedHotel: HotelInterface,
-    setRooms: (arg: RoomInterface[]) => void,
-    rooms: RoomInterface[],
     setSelectedRoom: (arg: RoomInterface) => void,
     selectedRoom: RoomInterface,
-    setRatePlans: any,
-    ratePlans: any,
-    setRoomsByOccupancy: (arg: RoomInterface[]) => void,
-    roomsByOccupancy: RoomInterface[],
+    setSelectedRatePlans: any,
+    selectedRatePlans: any,
 }
 
 const Pages: FC<Props> = ({
     rating,
     adults,
+    setAdults,
     children,
+    setChildren,
     setSelectedHotel,
     selectedHotel,
-    setRooms,
-    rooms,
     setSelectedRoom,
     selectedRoom,
-    setRatePlans,
-    ratePlans,
-    setRoomsByOccupancy,
-    roomsByOccupancy
+    setSelectedRatePlans,
+    selectedRatePlans,
 }) => {
 
     const location = useLocation();
@@ -51,15 +47,14 @@ const Pages: FC<Props> = ({
                     element={
                         <Home 
                             rating={rating} 
-                            adults={adults} 
+                            adults={adults}
+                            setAdults={setAdults}
                             children={children} 
+                            setChildren={setChildren}
                             setSelectedHotel={setSelectedHotel}
-                            setRooms={setRooms}
-                            rooms={rooms}
-                            setRatePlans={setRatePlans}
-                            setRoomsByOccupancy={setRoomsByOccupancy}
-                            roomsByOccupancy={roomsByOccupancy}
                             setSelectedRoom={setSelectedRoom}
+                            setSelectedRatePlans={setSelectedRatePlans}
+                            selectedRatePlans={selectedRatePlans}
                         />
                     } 
                 />
@@ -70,7 +65,12 @@ const Pages: FC<Props> = ({
                         <HotelDetails
                             selectedHotel={selectedHotel}
                             setSelectedRoom={setSelectedRoom}
-                            roomsByOccupancy={roomsByOccupancy}
+                            adults={adults}
+                            setAdults={setAdults}
+                            children={children}
+                            setChildren={setChildren}
+                            setSelectedRatePlans={setSelectedRatePlans}
+                            selectedRatePlans={selectedRatePlans}
                         />}
                     />
 
@@ -79,6 +79,7 @@ const Pages: FC<Props> = ({
                     element={
                         <RoomDetails
                             selectedRoom={selectedRoom}
+                            selectedRatePlans={selectedRatePlans}
                         />}
                 />
             </Routes>

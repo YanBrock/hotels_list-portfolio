@@ -2,58 +2,47 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 //Components
-import Pages from "./pages/Pages"
-import Filter from './components/Filter';
 import Header from './components/Header';
+import Pages from "./pages/Pages"
 import Footer from "./components/Footer"
 
 //Interface
-import HotelInterface from "./interfaces/HotelInterface"
 import RoomInterface from './interfaces/RoomInterface';
-
-//Styles
-import styled from 'styled-components';
 
 const App: React.FC = () => {
 
   const [rating, setRating] = useState<number>(0);
-  const [hover, setHover] = useState<number>(0);
-  const [adults, setAdults] = useState<number>(0);
+  const [adults, setAdults] = useState<number>(1);
   const [children, setChildren] = useState<number>(0);
-  const [selectedHotel, setSelectedHotel] = useState<any>();
-  const [rooms, setRooms] = useState<RoomInterface[]>([]);
-  const [selectedRoom, setSelectedRoom] = useState<any>();
-  const [ratePlans, setRatePlans] = useState([]);
-  const [roomsByOccupancy, setRoomsByOccupancy] = useState<RoomInterface[]>([]);
+  const [selectedHotel, setSelectedHotel] = useState<any>({});
+  const [selectedRoom, setSelectedRoom] = useState<any>({});
+  const [selectedRatePlans, setSelectedRatePlans] = useState({});
 
   return (
     <div className="App gradient">
       <BrowserRouter>
         <Header
           setRating={setRating}
-          setHover={setHover}
           rating={rating}
-          hover={hover}
           setAdults={setAdults}
           adults={adults}
           setChildren={setChildren}
           children={children}
+          selectedHotel={selectedHotel}
         />
 
         <Pages 
           rating={rating}
           adults={adults}
+          setAdults={setAdults}
           children={children}
+          setChildren={setChildren}
           setSelectedHotel={setSelectedHotel}
           selectedHotel={selectedHotel}
-          setRooms={setRooms}
-          rooms={rooms}
           setSelectedRoom={setSelectedRoom}
           selectedRoom={selectedRoom}
-          setRatePlans={setRatePlans}
-          ratePlans={ratePlans}
-          setRoomsByOccupancy={setRoomsByOccupancy}
-          roomsByOccupancy={roomsByOccupancy}
+          setSelectedRatePlans={setSelectedRatePlans}
+          selectedRatePlans={selectedRatePlans}
         />
 
         <Footer />
@@ -61,12 +50,5 @@ const App: React.FC = () => {
     </div>
   );
 };
-
-// const Gradient = styled.div`
-//   z-index: 3;
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-// `;
 
 export default App;

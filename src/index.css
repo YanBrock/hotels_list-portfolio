@@ -21,9 +21,12 @@ code {
 .App {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  min-height: 100vh;
+  /* overflow-x: hidden; */
 }
 
 .gradient {
-  background: linear-gradient(#ffffff, #bfbfbf);
+  background: linear-gradient(#636eff, #fffa63);
 }

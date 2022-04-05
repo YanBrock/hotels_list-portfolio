@@ -9,58 +9,59 @@ import RoomsInterface from "../interfaces/RoomInterface"
 type Props = {
   rating: number,
   adults: number,
+  setAdults: (arg: number) => void,
   children: number,
+  setChildren: (arg: number) => void;
   setSelectedHotel: (arg: HotelInterface) => void,
-  setRooms: (arg: RoomsInterface[]) => void,
-  rooms: RoomsInterface[];
   setSelectedRoom: (arg: RoomsInterface) => void,
-  setRatePlans: (arg: object) => void,
-  setRoomsByOccupancy: (arg: RoomsInterface[]) => void,
-  roomsByOccupancy: RoomsInterface[],
+  setSelectedRatePlans: any,
+  selectedRatePlans: any,
 };
 
 const Home: FC<Props> = ({
   rating,
   adults,
+  setAdults,
   children,
+  setChildren,
   setSelectedHotel,
-  setRooms,
-  rooms,
   setSelectedRoom,
-  setRatePlans,
-  setRoomsByOccupancy,
-  roomsByOccupancy,
+  setSelectedRatePlans,
+  selectedRatePlans,
 }) => {
 
-  const [allHotels, setAllHotels] = useState([]);
-  const [hotelsByRating, setHotelsByRating] = useState([]);
+  const [allHotels, setAllHotels] = useState<HotelInterface[]>([]);
+  const [filteredHotels, setFilteredHotels] = useState<HotelInterface[]>([]);
 
   const getHotels = async () => {
     const api = await fetch("https://obmng.dbm.guestline.net/api/hotels?collection-id=OBMNG");
     const data = await api.json();
     // console.log(data);
     setAllHotels(data);
-    setHotelsByRating(data);
+    setFilteredHotels(data);
   }
 
-  const getHotestByRating = async (rating: number) => {
-    const hotels = allHotels.filter((el: HotelInterface) => {
-      return parseInt(el.starRating) >= rating;
+  const getFilteredHotels = async (rating: number) => {
+    const hotelsList = allHotels.filter((hotel: HotelInterface) => {
+      return parseInt(hotel.starRating) >= rating;
     });
-    setHotelsByRating(hotels);
+    setFilteredHotels(hotelsList);
   }
 
   useEffect(() => {
-    getHotestByRating(rating);
+    getFilteredHotels(rating);
   }, [rating])
 
   useEffect(() => {
     getHotels();
+    setAdults(1);
+    setChildren(0);
   }, []);
 
   return(
     <div>
-        {hotelsByRating.map((hotel: HotelInterface) => {
+
+        {filteredHotels.map((hotel: HotelInterface) => {
           // console.log(hotel);
             return(
                 <Hotel
@@ -69,12 +70,9 @@ const Home: FC<Props> = ({
                   adults={adults}
                   children={children}
                   setSelectedHotel={setSelectedHotel}
-                  setRooms={setRooms}
-                  rooms={rooms}
                   setSelectedRoom={setSelectedRoom}
-                  setRatePlans={setRatePlans}
-                  setRoomsByOccupancy={setRoomsByOccupancy}
-                  roomsByOccupancy={roomsByOccupancy}
+                  setSelectedRatePlans={setSelectedRatePlans}
+                  selectedRatePlans={selectedRatePlans}
                 />
             );
         })}

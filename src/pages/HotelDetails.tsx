@@ -1,10 +1,14 @@
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import { FC } from "react"
+import { FC, useState, useEffect } from "react"
 
 //Materials
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+
+//Styles
 import styled from "styled-components";
+
+//Components
 import Room from "../components/Room";
 
 //Interface
@@ -13,22 +17,64 @@ import RoomInterface from "../interfaces/RoomInterface";
 
 type Props = {
     selectedHotel: HotelInterface,
-    roomsByOccupancy: RoomInterface[],
     setSelectedRoom: (arg: RoomInterface) => void,
+    adults: number,
+    setAdults: (arg: number) => void,
+    children: number,
+    setChildren: (arg: number) => void;
+    setSelectedRatePlans: any
+    selectedRatePlans: any
 };
 
-const HotelDetails: FC<Props> = ({ selectedHotel, roomsByOccupancy, setSelectedRoom }) => {
+const HotelDetails: FC<Props> = ({ 
+    selectedHotel, 
+    setSelectedRoom, 
+    adults, 
+    setAdults,
+    children,
+    setChildren,
+    setSelectedRatePlans,
+    selectedRatePlans,
+}) => {
 
-    console.log(selectedHotel);
+    const [hotelRooms, setHotelRooms] = useState<any>({});
+    const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([]);
+
+    const getRooms = async () => {
+        try {
+            const api = await fetch(`https://obmng.dbm.guestline.net/api/roomRates/OBMNG/${selectedHotel.id}`);
+            const data = await api.json();
+
+            setHotelRooms(data);
+            setFilteredRooms(data.rooms);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const getFilteredRooms = async (adults: number, children: number) => {
+        const allFilteredRooms = hotelRooms.rooms.filter((room: RoomInterface) => {
+          return (room.occupancy.maxAdults >= adults && room.occupancy.maxChildren >= children);
+        });
+        setFilteredRooms(allFilteredRooms);
+      }
+
+    useEffect(() => {
+        getFilteredRooms(adults, children);
+    }, [adults, children]);
+
+    useEffect(() => {
+        getRooms();
+    }, []);
 
     return(
         <Wrapper>
-            <div className="header">
-                <h1 className="title">
+            <section className="heading">
+                <h1 className="heading_title">
                     {selectedHotel.name}
                 </h1>
                 
-                <div className="rating">
+                <div className="heading_rating">
                     {[...Array(5)].map((star, i) => {
                             const ratingValue = i + 1;
                             return(
@@ -41,80 +87,116 @@ const HotelDetails: FC<Props> = ({ selectedHotel, roomsByOccupancy, setSelectedR
                         })
                     }
                 </div>
-            </div>
-        <div className="mainWrapper">
-            <SplideStyled
-                options={{
-                    perPage: 1,
-                    arrows: selectedHotel.images.length > 1 ? true : false,
-                    // pagination: false,
-                    // drag: "free",
-                    // gap: "5rem",
-                }}
-            >
-                {selectedHotel.images.map((image: {url: string, alt: string}) => {
-                    return(
-                        <SplideSlideStyled key={image.url}>
-                            <img src={image.url} alt={image.alt} />
-                        </SplideSlideStyled>
-                    )
-                })}
-                
-            </SplideStyled>
+            </section>
 
-            <div className="hotelData">
-                <h3>About {selectedHotel.name}:</h3>
-                <div className="description">{selectedHotel.description}</div>
-                <h3>Facilities:</h3>
-                <div className="facilities">
-                    {selectedHotel.facilities.map((item: any, i: number) => {
+            <section className="gallery">
+                <SplideStyled
+                    options={{
+                        perPage: 1,
+                        arrows: selectedHotel.images.length > 1 ? true : false,
+                        // pagination: false,
+                        // drag: "free",
+                        // gap: "5rem",
+                    }}
+                >
+                    {selectedHotel.images.map((image: {url: string, alt: string}) => {
                         return(
-                            <div className="item" key={i}>{item.code}</div>
+                            <SplideSlideStyled key={image.url}>
+                                <img src={image.url} alt={image.alt} />
+                            </SplideSlideStyled>
                         )
                     })}
+                    
+                </SplideStyled>
+
+                <div className="gallery_info">
+                    <h3>About {selectedHotel.name}:</h3>
+                    <div className="description">{selectedHotel.description}</div>
+
+                    {selectedHotel.facilities.length !== 0 && (
+                        <h3>Facilities:</h3>
+                    )}
+
+                    <div className="facilities">
+                        {selectedHotel.facilities.map((item: any, i: number) => {
+                            return(
+                                <div className="item" key={i}>{item.code}</div>
+                            )
+                        })}
+                    </div>
                 </div>
-                <div className="wrapper">
-                    <div className="location">
-                        <h3>Location:</h3>
-                        <div className="address">
-                            <div className="country">Country: {selectedHotel.country} (Country code: {selectedHotel.countryCode}, Postcode: {selectedHotel.postcode})</div>
-                            <div className="town">Town: {selectedHotel.town}</div>
-                            <div className="street">Address 1: {selectedHotel.address1}</div>
-                            <div className="street">Address 2: {selectedHotel.address2}</div>
-                            <div className="coordinates">Coordinates: {`${selectedHotel.position.latitude}.${selectedHotel.position.longitude}; Time zone: ${selectedHotel.position.timezone}`}</div>
+            </section>
+            
+            <section className="contactData">
+                
+                <div className="contactData_location">
+                    <h3>Location:</h3>
+                    <div className="address">
+                        <div className="address_item">
+                            <b>Country: </b> 
+                            {selectedHotel.country} (Country code: {selectedHotel.countryCode}, Postcode: {selectedHotel.postcode});
                         </div>
-                    </div>
-                    <div className="contacts">
-                        <h3>Contacts:</h3>
-                        <div className="phone">Phone number: {selectedHotel.telephone}</div>
-                        <div className="email">Email: {selectedHotel.email}</div>
+                        <div className="address_item"> 
+                            <b>Town: </b> 
+                            {selectedHotel.town};
+                        </div>
+                        <div className="address_item">
+                            <b>Address 1: </b> 
+                            {selectedHotel.address1};
+                        </div>
+                        <div className="address_item">
+                            <b>Address 2: </b> 
+                            {selectedHotel.address2};
+                        </div>
+
+                        {selectedHotel.position !== undefined && (
+                            <div className="address_item">
+                            <b>Coordinates: </b> 
+                            {`${selectedHotel.position.latitude}.${selectedHotel.position.longitude}; Time zone: ${selectedHotel.position.timezone}`}.
+                        </div>
+                        )}
+                        
                     </div>
                 </div>
-                <div className="registrationTime">
+                <div className="contactData_contact">
+                    <h3>Contacts:</h3>
+                    <div className="item">
+                        <b>Phone number: </b>
+                        {selectedHotel.telephone};
+                    </div>
+                    <div className="item">
+                        <b>Email: </b>
+                        {selectedHotel.email}.
+                    </div>
+                </div>
+                
+                <div className="contactData_registrationTime">
                     <h3>Registration time:</h3>
                     {`${selectedHotel.checkInHours}:${selectedHotel.checkInMinutes} - ${selectedHotel.checkOutHours}:${selectedHotel.checkOutMinutes}`}
                 </div>
+            </section>
 
-                <h3>Rooms</h3>
+            <section className="hotelRooms">
+                <h3>Rooms:</h3>
                 
-                <div className="hotelRooms">
-                    {roomsByOccupancy.map((room: RoomInterface) => {
+                <div className="hotelRooms_rooms">
+
+                    {filteredRooms.map((room: RoomInterface, i: number) => {
                         return(
-                            <LinkStyled to={`/room-details/${room.id}`} onClick={() => setSelectedRoom(room)}>
+                            <LinkStyled key={room.id} to={`/room-details/${room.id}`} onClick={() => {setSelectedRoom(room); setSelectedRatePlans(hotelRooms.ratePlans[i])}}>
                                 <Room
                                     id={room.id}
                                     name={room.name}
                                     occupancy={room.occupancy}
                                     longDescription={room.longDescription}
                                     disabledAccess={room.disabledAccess}
+                                    selectedRatePlans={selectedRatePlans}
                                 />
                             </LinkStyled>
-                            
                         )
                     })}
                 </div>
-            </div>
-            </div>
+            </section>
         </Wrapper>
     );
 };
@@ -125,64 +207,106 @@ const Wrapper = styled.div`
     align-items: center;
     padding: 1rem;
 
-    .header {
+    .heading {
         display: flex;
-        width: 80%;
         justify-content: center;
         align-items: center;
-        margin: 1rem 0;
+        width: 100%;
+        margin-bottom: 2rem;
 
-        .title {
-            margin: 0 3rem 0 0;
+        &_title {
+            margin-right: 3rem;
         }
     }
 
-    .mainWrapper {
+    .gallery {
         display: flex;
+        margin-bottom: 2rem;
+
+        &_info {
+            width: 45%;
+
+            .description {
+                margin-bottom: 1rem;
+            }
+
+            h3 {
+                margin-bottom: .5rem;
+            }
+
+            .facilities {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 3px;
+                max-height: 15rem;
+                overflow: scroll;
+
+                .item {
+                    width: 48%;
+                    height: 3rem;
+                    // background-color: #9dc997;
+                    background-color: #FFF;
+                    border-radius: 3px;
+                    overflow-y: scroll;
+                    padding: 3px;
+                }
+            }
+        }
     }
 
-    .hotelData {
+    .contactData {
         display: flex;
-        flex-direction: column;
-        width: 40%;
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        border: solid 1px #e6e6e6;
+        border-radius: 3px;
+        background-color: white;
 
-        .description {
-            margin: 0 0 1rem 0;
-        }
-
-        .facilities{
+        & > div {
             display: flex;
             flex-direction: column;
-            flex-wrap: wrap;
-            max-height: 15rem;
-            margin: 0 0 1rem 0;
-
-            .item{
-                width: 10rem;
-                height: 2rem;
-                border: solid 1px black;
-                border-radius: 3px;
-                margin: .5rem;
-            }
+            width: 100%;
+            padding: .5rem;
         }
 
-        .wrapper {
-            display: flex;
-            margin: 0 0 1rem 0;
+        & > div:not(:last-child) {
+            border-right: solid 1px #e6e6e6;
+        }
 
-            .location {
-                margin: 0 5rem 0 0;
-            }
+        .address_item:not(:last-child), &_contact .item:not(:last-child) {
+            margin-bottom: 5px;
+        }
+
+        h3 {
+            margin-bottom: .5rem;
+        }
+    }
+
+    .hotelRooms {
+        width: 100%;
+        margin-bottom: 2rem;
+
+        h3 {
+            margin-bottom: .5rem;
+        }
+
+        &_rooms {
+            width: 100%;
+            // height: 40rem;
+            // overflow-y: scroll;
+            padding: .5rem;
         }
     }
 `;
 
 const SplideStyled = styled(Splide)`
+    margin-bottom: 2rem;
+    min-width: 50%;
+    min-height: 15rem;
     display: flex;
-    justify-contenr: center;
+    justify-content: center;
     align-items: center;
-    max-width: 60%;
-    margin: o auto;
 `;
 
 const SplideSlideStyled = styled(SplideSlide)`

@@ -21,12 +21,9 @@ type Props = {
     adults: number,
     children: number,
     setSelectedHotel: (arg: HotelInterface) => void,
-    setRooms: (arg: RoomInterface[]) => void,
-    rooms: RoomInterface[];
     setSelectedRoom: (arg: RoomInterface) => void,
-    setRatePlans: (arg: object) => void,
-    setRoomsByOccupancy: (arg: RoomInterface[]) => void,
-    roomsByOccupancy: RoomInterface[],
+    setSelectedRatePlans: any,
+    selectedRatePlans: any,
 }
 
 const Hotel: FC<Props> = ({
@@ -34,31 +31,30 @@ const Hotel: FC<Props> = ({
     adults,
     children,
     setSelectedHotel,
-    setRooms,
-    rooms,
     setSelectedRoom,
-    // selectedRoom,
-    setRatePlans,
-    setRoomsByOccupancy,
-    roomsByOccupancy,
+    setSelectedRatePlans,
+    selectedRatePlans,
 }) => {
+
+    const [hotelRooms, setHotelRooms] = useState<any>({});
+    const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([]);
 
     const getRooms = async () => {
         const api = await fetch(`https://obmng.dbm.guestline.net/api/roomRates/OBMNG/${hotel.id}`);
         const data = await api.json();
-        setRatePlans(data.ratePlans);
-        setRooms(data.rooms);
-        setRoomsByOccupancy(data.rooms);
 
+        setHotelRooms(data);
+        setFilteredRooms(data.rooms);
+        
         console.log(data);
     }
 
-    const getFilteredRooms= async (adults: number, children: number) => {
-        const filteredRooms = rooms.filter((el: RoomInterface) => {
-          return (el.occupancy.maxAdults >= adults && el.occupancy.maxChildren >= children);
+    const getFilteredRooms = async (adults: number, children: number) => {
+        const allFilteredRooms = hotelRooms.rooms.filter((room: RoomInterface) => {
+          return (room.occupancy.maxAdults >= adults && room.occupancy.maxChildren >= children);
         });
-        setRoomsByOccupancy(filteredRooms);
-      }
+        setFilteredRooms(allFilteredRooms);
+    }
 
     useEffect(() => {
         getFilteredRooms(adults, children);
@@ -116,21 +112,22 @@ const Hotel: FC<Props> = ({
                     </div>
                 </div>
 
-                {/* <h2 className="roomsTitle">Available Rooms</h2> */}
+                {/* <h2 className="roomsTitle">{hotel.name} Rooms</h2> */}
 
                 <div className="hotelRooms">
-                    {roomsByOccupancy.map((room: RoomInterface) => {
+                    {filteredRooms.map((room: RoomInterface, i: number) => {
                         return(
-                            <LinkStyled to={`/room-details/${room.id}`} onClick={() => setSelectedRoom(room)}>
+                            <LinkStyled to={`/room-details/${room.id}`} onClick={() => {setSelectedRoom(room); setSelectedRatePlans(hotelRooms.ratePlans[i]); console.log(hotelRooms.ratePlans[i])}} key={room.id}>
                                 <Room 
                                     id={room.id}
                                     name={room.name}
                                     occupancy={room.occupancy}
                                     longDescription={room.longDescription}
                                     disabledAccess={room.disabledAccess}
+                                    selectedRatePlans={selectedRatePlans}
                                 />
                             </LinkStyled>
-                        )
+                        );
                     })}
                 </div>
             </Card>
@@ -173,8 +170,18 @@ const Card = styled.div`
         }
     
         .titles {
+
             h1 {
                 margin-bottom: .5rem;
+                border: 3px solid transparent;
+                transition: all .1s ease-in;
+
+                &:hover {
+                    // color: rgba(0, 0, 0, .7);
+                    // text-decoration: underline;
+                    // transform: scale(110%, 110%);
+                    border-bottom: 3px solid black;
+                }
             }
     
             p.ad1{
