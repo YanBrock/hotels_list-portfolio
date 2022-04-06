@@ -14,13 +14,10 @@ type Props = {
 
 
 const Room: FC<Props> = ( {id, name, occupancy, longDescription, disabledAccess, selectedRatePlans} ) => {
-console.log(selectedRatePlans);
+// console.log(selectedRatePlans);
 
     return(
         <Wrapper>
-            {/* <div>
-                 rate plan ID: {selectedRatePlans.id}
-            </div> */}
 
             <div
                 className="availability"
@@ -37,8 +34,11 @@ console.log(selectedRatePlans);
                 
                 <div className="titles">
                     <h3>{name}</h3>
-                    <p className="adults">Adults: {occupancy.maxAdults}</p>
-                    <p>Children: {occupancy.maxChildren}</p>
+                    <div>
+                        <p className="adults">Adults: {occupancy.maxAdults}</p>
+                        <p>Children: {occupancy.maxChildren}</p>
+                    </div>
+                    
                 </div>
 
                 <div className="description">
@@ -58,6 +58,12 @@ const Wrapper = styled.div`
         position: absolute;
         top: .5rem;
         right: .5rem;
+
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 900px) {
+            position: initial;
+        }
     }
 
     .room {
@@ -66,6 +72,23 @@ const Wrapper = styled.div`
         height: 8rem;
         border-radius: 3px;
         margin-bottom: 1rem;
+        transition: all .1s ease-in;
+
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 900px) {
+            flex-direction: column;
+            align-items: center;
+
+            .titles {
+                width: 100%;
+                display: flex;
+            }
+
+            .description {
+                width: 100%;
+            }
+        }
 
         &:hover{
             box-shadow: 0px 3px 10px gray;
@@ -74,8 +97,22 @@ const Wrapper = styled.div`
         .titles {
             width: 30%;
 
+            @media only screen
+            and (min-width: 320px)
+            and (max-width: 900px) {
+                width: 100%;
+                display: flex;
+                margin: 0 0 .5rem 0;
+            }
+
             h3 {
-                margin-bottom: .5rem;
+                margin: 0 0 .5rem 0;
+
+                @media only screen
+                and (min-width: 320px)
+                and (max-width: 900px) {
+                    margin: 0 .5rem 0 0;
+                }
             }
     
             p.adults{
@@ -87,6 +124,14 @@ const Wrapper = styled.div`
             width: 60%;
             max-height: 10rem;
             overflow-y: scroll;
+
+            @media only screen
+            and (min-width: 320px)
+            and (max-width: 900px) {
+                width: 100%;
+                display: flex;
+                align-self: flex-start;
+            }
         }
     }
 `;

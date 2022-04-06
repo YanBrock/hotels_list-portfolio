@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { FC } from "react";
 
+import Button from "@material-ui/core/Button"
+import { MdArrowBackIos } from "react-icons/md";
+
 type Props = {
     selectedRoom: any,
     selectedRatePlans: any,
@@ -13,6 +16,8 @@ const RoomDetails: FC<Props> = ({ selectedRoom, selectedRatePlans }) => {
     console.log(selectedRatePlans);
     return(
         <Wrapper>
+            <BackBtn variant="outlined" startIcon={<MdArrowBackIos />} href="/">Home</BackBtn>
+
             <section className="roomTitle">
                 <h1 className="title">
                     {selectedRoom.name}
@@ -60,20 +65,18 @@ const RoomDetails: FC<Props> = ({ selectedRoom, selectedRatePlans }) => {
                         <div className="item">{selectedRoom.bedConfiguration}</div>
                     </div>
 
-                </div>
-
-            </section>
-
-            <section className="facilities">
-                {selectedRoom.facilities.length !== 0 && (
-                    <h3>Facilities:</h3>
-                )}
-                <div className="facilities_list">
-                    {selectedRoom.facilities.map((item: any, i: number) => {
-                        return(
-                            <div className="item" key={i}>{item.code}</div>
-                        )
-                    })}
+                    <div className="facilities">
+                        {selectedRoom.facilities.length !== 0 && (
+                            <h3>Facilities:</h3>
+                        )}
+                        <div className="facilities_list">
+                            {selectedRoom.facilities.map((item: any, i: number) => {
+                                return(
+                                    <div className="item" key={i}>{item.code}</div>
+                                )
+                            })}
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -117,6 +120,7 @@ const RoomDetails: FC<Props> = ({ selectedRoom, selectedRatePlans }) => {
 };
 
 const Wrapper = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -141,8 +145,15 @@ const Wrapper = styled.div`
         justify-content: center;
         margin-bottom: 2rem;
 
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 900px) {
+            flex-direction: column;
+            align-items: center;
+        }
+
         .about {
-            width: 45%;
+            min-width: 35%;
 
             & > div {
                 margin-bottom: 10px;
@@ -176,13 +187,31 @@ const Wrapper = styled.div`
             overflow: scroll;
 
             .item {
-                width: 24%;
+                width: 49%;
                 height: 3rem;
                 // background-color: #9dc997;
                 background-color: #FFF;
                 border-radius: 3px;
                 overflow-y: scroll;
                 padding: 3px;
+
+                @media only screen
+                and (min-width: 320)
+                and (max-width: 480px) {
+                    width: 32%;
+                }
+
+                @media only screen
+                and (min-width: 481px)
+                and (max-width: 768px) {
+                    width: 32%;
+                }
+
+                @media only screen
+                and (min-width: 769px)
+                and (max-width: 900px) {
+                    width: 24%;
+                }
             }
         }
     }
@@ -194,14 +223,29 @@ const Wrapper = styled.div`
         border: solid 1px #e6e6e6;
         border-radius: 3px;
         margin-bottom: 2rem;
+        padding: 5px;
+
+
+        @media only screen
+        and (min-width: 320)
+        and (max-width: 480px) {
+            flex-direction: column;
+            align-items: center;
+        }
 
         h3 {
             margin-bottom: .5rem;
         }
 
         &_item {
-            max-width: 50%;
+            width: 50%
             padding: .5rem;
+
+            @media only screen
+            and (min-width: 320)
+            and (max-width: 480px) {
+                width: 100%;
+            }
         }
 
         &_item:first-child {
@@ -216,11 +260,21 @@ const Wrapper = styled.div`
 
 const SplideStyled = styled(Splide)`
     margin-bottom: 2rem;
-    min-width: 50%;
+    min-width: 63%;
     min-height: 15rem;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media only screen
+    and (min-width: 320px)
+    and (max-width: 480px) {
+        height: fit-content;
+    }
+
+    .splide__list {
+        align-items: center;
+    }
 `;
 
 const SplideSlideStyled = styled(SplideSlide)`
@@ -235,6 +289,31 @@ const SplideSlideStyled = styled(SplideSlide)`
         height: 100%;
         object-fit: contain;
     }
+`;
+
+const BackBtn = styled(Button)`
+    a& {
+        display: flex;
+        position: sticky;
+        top: 30px;
+        left: 30px;
+        align-self: flex-start;
+        z-index: 10;
+        background-color: #ededed;
+        box-shadow: 1px 1px 3px gray, -1px -1px 3px gray
+        transition: all .1s ease-in;
+
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 900px) {
+            display: none;
+        }
+    }
+
+    a&:hover {
+        background-color: white;
+    }
+    
 `;
 
 export default RoomDetails;

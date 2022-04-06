@@ -86,17 +86,6 @@ const Hotel: FC<Props> = ({
                         })}
                     </SplideStyled>
 
-                    <div className="titles">
-                        <LinkStyled 
-                            to={`/hotel-details/${hotel.id}`} 
-                            onClick={() => setSelectedHotel(hotel)}
-                        >
-                            <h1>{hotel.name}</h1>
-                        </LinkStyled>
-                        <p className="ad1">{hotel.address1}</p>
-                        <p>{hotel.address2}</p>
-                    </div>
-
                     <div className="rating">
                         {[...Array(5)].map((star, i) => {
                                 const ratingValue = i + 1;
@@ -109,6 +98,17 @@ const Hotel: FC<Props> = ({
                                 )
                             })
                         }
+                    </div>
+
+                    <div className="titles">
+                        <LinkStyled 
+                            to={`/hotel-details/${hotel.id}`} 
+                            onClick={() => setSelectedHotel(hotel)}
+                        >
+                            <h1>{hotel.name}</h1>
+                        </LinkStyled>
+                        <p className="ad1">{hotel.address1}</p>
+                        <p>{hotel.address2}</p>
                     </div>
                 </div>
 
@@ -145,16 +145,22 @@ const Wrapper = styled.div`
   border-radius: 3px;
   box-shadow: 0px 3px 10px gray;
   padding: 1rem;
+
+  @media only screen
+    and (min-width: 320px)
+    and (max-width: 620px) {
+        margin: .5rem 0
+    }
 `;
 
 const Card = styled.div`
     display: flex;
     flex-direction: column;
     min-height: 30rem;
-    width: 70rem;
+    width: 100%;
+    max-width: 70rem;
     border-radius: 3px; 
     overflow: hidden;
-    position: relative;  
 
     .hotelsData {
         display: flex;
@@ -162,6 +168,14 @@ const Card = styled.div`
         padding-bottom: 1rem;
         box-shadow: 0px 6px 10px gray;
         z-index: 3;
+        position: relative; 
+
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 620px) {
+            flex-direction: column;
+            align-items: center;
+        }
 
         img {
             width: 15rem;
@@ -170,6 +184,11 @@ const Card = styled.div`
         }
     
         .titles {
+            @media only screen
+            and (min-width: 320px)
+            and (max-width: 620px) {
+                text-align: center;
+            }
 
             h1 {
                 margin-bottom: .5rem;
@@ -193,6 +212,12 @@ const Card = styled.div`
             position: absolute;
             top: 0;
             right: 0;
+
+            @media only screen
+            and (min-width: 320px)
+            and (max-width: 620px) {
+                position: initial;
+            }
         }
     }
 
@@ -219,6 +244,12 @@ const LinkStyled = styled(Link)`
 const SplideStyled = styled(Splide)`
   max-width: 15rem;
   margin-right: 1rem;
+
+  @media only screen
+    and (min-width: 320px)
+    and (max-width: 620px) {
+        margin: 0;
+    }
 `;
 
 export default Hotel;

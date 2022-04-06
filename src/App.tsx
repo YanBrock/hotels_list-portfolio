@@ -17,6 +17,7 @@ const App: React.FC = () => {
   const [selectedHotel, setSelectedHotel] = useState<any>({});
   const [selectedRoom, setSelectedRoom] = useState<any>({});
   const [selectedRatePlans, setSelectedRatePlans] = useState({});
+  const [hotelsImages, setHotelsImages] = useState([]);
 
   return (
     <div className="App gradient">
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           setChildren={setChildren}
           children={children}
           selectedHotel={selectedHotel}
+          hotelsImages={hotelsImages}
         />
 
         <Pages 
@@ -43,6 +45,7 @@ const App: React.FC = () => {
           selectedRoom={selectedRoom}
           setSelectedRatePlans={setSelectedRatePlans}
           selectedRatePlans={selectedRatePlans}
+          setHotelsImages={setHotelsImages}
         />
 
         <Footer />

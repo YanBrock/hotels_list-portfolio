@@ -4,6 +4,8 @@ import { FC, useState, useEffect } from "react"
 //Materials
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button"
+import { MdArrowBackIos } from "react-icons/md";
 
 //Styles
 import styled from "styled-components";
@@ -69,6 +71,8 @@ const HotelDetails: FC<Props> = ({
 
     return(
         <Wrapper>
+            <BackBtn variant="outlined" startIcon={<MdArrowBackIos />} href="/">Home</BackBtn>
+
             <section className="heading">
                 <h1 className="heading_title">
                     {selectedHotel.name}
@@ -206,6 +210,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 1rem;
+    position: relative;
 
     .heading {
         display: flex;
@@ -214,8 +219,21 @@ const Wrapper = styled.div`
         width: 100%;
         margin-bottom: 2rem;
 
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 480px) {
+            display: flex;
+            flex-direction: column;
+        }
+
         &_title {
-            margin-right: 3rem;
+            margin: 0 3rem 0 0;
+
+            @media only screen
+            and (min-width: 320px)
+            and (max-width: 480px) {
+                margin: 0 0 .5rem 0;
+            }
         }
     }
 
@@ -223,8 +241,27 @@ const Wrapper = styled.div`
         display: flex;
         margin-bottom: 2rem;
 
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 1023px) {
+            flex-direction: column;
+            align-items: center;
+        }
+
         &_info {
-            width: 45%;
+            min-width: 45%;
+
+            @media only screen
+            and (min-width: 320px)
+            and (max-width: 1023px) {
+                width: 100%;
+            }
+
+            // @media only screen
+            // and (min-width: 1024px)
+            // and (max-width: 1440px) {
+            //     min-width: 48%;
+            // }
 
             .description {
                 margin-bottom: 1rem;
@@ -242,13 +279,25 @@ const Wrapper = styled.div`
                 overflow: scroll;
 
                 .item {
-                    width: 48%;
+                    width: 49%;
                     height: 3rem;
                     // background-color: #9dc997;
                     background-color: #FFF;
                     border-radius: 3px;
                     overflow-y: scroll;
                     padding: 3px;
+
+                    @media only screen
+                    and (min-width: 320px)
+                    and (max-width: 1023px) {
+                        width: 32%;
+                    }
+
+                    @media only screen
+                    and (min-width: 320px)
+                    and (max-width: 820px) {
+                        width: 49%;
+                    }
                 }
             }
         }
@@ -262,6 +311,13 @@ const Wrapper = styled.div`
         border: solid 1px #e6e6e6;
         border-radius: 3px;
         background-color: white;
+
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 620px) {
+            flex-direction: column;
+            align-items: center;
+        }
 
         & > div {
             display: flex;
@@ -301,12 +357,28 @@ const Wrapper = styled.div`
 `;
 
 const SplideStyled = styled(Splide)`
-    margin-bottom: 2rem;
+    margin: 0 2rem 0 0;
     min-width: 50%;
     min-height: 15rem;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media only screen
+    and (min-width: 1024px)
+    and (max-width: 1440px) {
+        margin: 0 1rem 0 0;
+    }
+
+    @media only screen
+    and (min-width: 320px)
+    and (max-width: 1023px) {
+        margin: 0 0 0 0;
+    }
+
+    .splide__list {
+        align-items: center;
+    }
 `;
 
 const SplideSlideStyled = styled(SplideSlide)`
@@ -315,6 +387,12 @@ const SplideSlideStyled = styled(SplideSlide)`
     align-items: center;
     width: 60rem;
     height: 30rem;
+
+    @media only screen
+    and (min-width: 320px)
+    and (max-width: 480px) {
+        height: fit-content;
+    }
 
     img {
         width: 100%;
@@ -326,6 +404,32 @@ const SplideSlideStyled = styled(SplideSlide)`
 const LinkStyled = styled(Link)`
   text-decoration: none;
   color: black;
+`;
+
+const BackBtn = styled(Button)`
+    a& {
+        display: flex;
+        position: sticky;
+        top: 30px;
+        left: 30px;
+        align-self: flex-start;
+        z-index: 10;
+        background-color: #ededed;
+        box-shadow: 1px 1px 3px gray, -1px -1px 3px gray
+        transition: all .1s ease-in;
+        border-radius: 3px;
+
+        @media only screen
+        and (min-width: 320px)
+        and (max-width: 780px) {
+            display: none;
+        }
+    }
+
+    a&:hover {
+        background-color: white;
+    }
+    
 `;
 
 export default HotelDetails;

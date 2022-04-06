@@ -22,6 +22,7 @@ type Props = {
     selectedRoom: RoomInterface,
     setSelectedRatePlans: any,
     selectedRatePlans: any,
+    setHotelsImages: any,
 }
 
 const Pages: FC<Props> = ({
@@ -36,6 +37,7 @@ const Pages: FC<Props> = ({
     selectedRoom,
     setSelectedRatePlans,
     selectedRatePlans,
+    setHotelsImages,
 }) => {
 
     const location = useLocation();
@@ -55,6 +57,7 @@ const Pages: FC<Props> = ({
                             setSelectedRoom={setSelectedRoom}
                             setSelectedRatePlans={setSelectedRatePlans}
                             selectedRatePlans={selectedRatePlans}
+                            setHotelsImages={setHotelsImages}
                         />
                     } 
                 />

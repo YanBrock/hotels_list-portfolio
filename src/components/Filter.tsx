@@ -61,9 +61,19 @@ const Wrapper = styled.div`
   background-color: #FFF;
   padding: .5rem;
   position: absolute;
-  top: 85%;
-  left: 30%;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
   // background-image: url("../../assets/images/filterBG.jpeg");
+
+  
+  @media only screen
+  and (min-width: 320px)
+  and (max-width: 560px) {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0;
+  }
 `;
 
 export default Filter;

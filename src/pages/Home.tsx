@@ -16,6 +16,7 @@ type Props = {
   setSelectedRoom: (arg: RoomsInterface) => void,
   setSelectedRatePlans: any,
   selectedRatePlans: any,
+  setHotelsImages: any,
 };
 
 const Home: FC<Props> = ({
@@ -28,6 +29,7 @@ const Home: FC<Props> = ({
   setSelectedRoom,
   setSelectedRatePlans,
   selectedRatePlans,
+  setHotelsImages,
 }) => {
 
   const [allHotels, setAllHotels] = useState<HotelInterface[]>([]);
@@ -39,6 +41,7 @@ const Home: FC<Props> = ({
     // console.log(data);
     setAllHotels(data);
     setFilteredHotels(data);
+    getHotelsImages(data);
   }
 
   const getFilteredHotels = async (rating: number) => {
@@ -48,33 +51,38 @@ const Home: FC<Props> = ({
     setFilteredHotels(hotelsList);
   }
 
+  const getHotelsImages = (allHotels: HotelInterface[]) => {
+    const hotelsImages = allHotels.map((hotel: HotelInterface) => {
+      return hotel.images[0].url;
+    });
+
+    setHotelsImages(hotelsImages);
+  }
+
   useEffect(() => {
     getFilteredHotels(rating);
   }, [rating])
 
   useEffect(() => {
     getHotels();
-    setAdults(1);
-    setChildren(0);
   }, []);
 
   return(
     <div>
-
         {filteredHotels.map((hotel: HotelInterface) => {
           // console.log(hotel);
-            return(
-                <Hotel
-                  key={hotel.id}
-                  hotel={hotel}
-                  adults={adults}
-                  children={children}
-                  setSelectedHotel={setSelectedHotel}
-                  setSelectedRoom={setSelectedRoom}
-                  setSelectedRatePlans={setSelectedRatePlans}
-                  selectedRatePlans={selectedRatePlans}
-                />
-            );
+          return(
+            <Hotel
+              key={hotel.id}
+              hotel={hotel}
+              adults={adults}
+              children={children}
+              setSelectedHotel={setSelectedHotel}
+              setSelectedRoom={setSelectedRoom}
+              setSelectedRatePlans={setSelectedRatePlans}
+              selectedRatePlans={selectedRatePlans}
+            />
+          );
         })}
     </div>
   );

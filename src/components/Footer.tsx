@@ -9,11 +9,11 @@ const Footer: FC = () => {
     return(
         <Wrapper>
             <span>&copy; YanBrock</span>
-            <a href="https://github.com/YanBrock">
+            <a href="https://github.com/YanBrock" target="blanck">
                 <BsGithub size={25} />
             </a>
 
-            <a href="https://www.linkedin.com/in/yan-barsukevich">
+            <a href="https://www.linkedin.com/in/yan-barsukevich" target="blanck">
                 <AiFillLinkedin size={25} />
             </a>
         </Wrapper>
