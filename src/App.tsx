@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 //Components
 import Header from './components/Header';
 import Pages from "./pages/Pages"
 import Footer from "./components/Footer"
-
-//Interface
 import RoomInterface from './interfaces/RoomInterface';
 
-const App: React.FC = () => {
+const App: FC = () => {
 
   const [rating, setRating] = useState<number>(0);
   const [adults, setAdults] = useState<number>(1);
@@ -29,16 +27,13 @@ const App: React.FC = () => {
           adults={adults}
           setChildren={setChildren}
           children={children}
-          selectedHotel={selectedHotel}
           hotelsImages={hotelsImages}
         />
 
         <Pages 
           rating={rating}
           adults={adults}
-          setAdults={setAdults}
           children={children}
-          setChildren={setChildren}
           setSelectedHotel={setSelectedHotel}
           selectedHotel={selectedHotel}
           setSelectedRoom={setSelectedRoom}

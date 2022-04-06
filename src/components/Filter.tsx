@@ -1,4 +1,6 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+
+//Materials
 import Button from "@material-ui/core/Button"
 
 //Components
@@ -64,7 +66,6 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 50%);
-  // background-image: url("../../assets/images/filterBG.jpeg");
 
   
   @media only screen

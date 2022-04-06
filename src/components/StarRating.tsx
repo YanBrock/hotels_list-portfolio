@@ -1,5 +1,9 @@
 import { FC, useState } from "react";
+
+//Materials
 import { FaStar } from "react-icons/fa";
+
+//Styles
 import styled from "styled-components"
 
 type Props = {

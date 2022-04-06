@@ -6,8 +6,6 @@ import styled from "styled-components";
 //Components
 import Filter from "./Filter";
 
-import HotelInterface from "../interfaces/HotelInterface"
-
 type Props = {
     setRating: (arg: number) => void;
     rating: number;
@@ -15,7 +13,6 @@ type Props = {
     adults: number;
     setChildren: (arg: number) => void;
     children: number;
-    selectedHotel: HotelInterface;
     hotelsImages: any;
 }
 
@@ -26,7 +23,6 @@ const Header: FC<Props> = ({
     adults, 
     setChildren, 
     children,
-    selectedHotel,
     hotelsImages,
 }) => {
 

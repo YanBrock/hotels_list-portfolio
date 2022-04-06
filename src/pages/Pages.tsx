@@ -13,9 +13,7 @@ import RoomInterface from "../interfaces/RoomInterface";
 type Props = {
     rating: number,
     adults: number,
-    setAdults: (arg: number) => void,
     children: number,
-    setChildren: (arg: number) => void;
     setSelectedHotel: (arg: HotelInterface) => void,
     selectedHotel: HotelInterface,
     setSelectedRoom: (arg: RoomInterface) => void,
@@ -28,9 +26,7 @@ type Props = {
 const Pages: FC<Props> = ({
     rating,
     adults,
-    setAdults,
     children,
-    setChildren,
     setSelectedHotel,
     selectedHotel,
     setSelectedRoom,
@@ -50,9 +46,7 @@ const Pages: FC<Props> = ({
                         <Home 
                             rating={rating} 
                             adults={adults}
-                            setAdults={setAdults}
-                            children={children} 
-                            setChildren={setChildren}
+                            children={children}
                             setSelectedHotel={setSelectedHotel}
                             setSelectedRoom={setSelectedRoom}
                             setSelectedRatePlans={setSelectedRatePlans}
@@ -69,13 +63,11 @@ const Pages: FC<Props> = ({
                             selectedHotel={selectedHotel}
                             setSelectedRoom={setSelectedRoom}
                             adults={adults}
-                            setAdults={setAdults}
                             children={children}
-                            setChildren={setChildren}
                             setSelectedRatePlans={setSelectedRatePlans}
-                            selectedRatePlans={selectedRatePlans}
-                        />}
-                    />
+                        />
+                    }
+                />
 
                 <Route 
                     path="/room-details/:name"
@@ -83,7 +75,8 @@ const Pages: FC<Props> = ({
                         <RoomDetails
                             selectedRoom={selectedRoom}
                             selectedRatePlans={selectedRatePlans}
-                        />}
+                        />
+                    }
                 />
             </Routes>
     );

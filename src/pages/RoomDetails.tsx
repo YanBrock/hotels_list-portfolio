@@ -1,10 +1,16 @@
-import styled from "styled-components";
-
-import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { FC } from "react";
 
+//Materials
 import Button from "@material-ui/core/Button"
 import { MdArrowBackIos } from "react-icons/md";
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import '@splidejs/splide/dist/css/splide.min.css';
+
+//Style
+import styled from "styled-components";
+
+//Interfaces
+import RoomInterface from "../interfaces/RoomInterface";
 
 type Props = {
     selectedRoom: any,
@@ -12,7 +18,6 @@ type Props = {
 }
 
 const RoomDetails: FC<Props> = ({ selectedRoom, selectedRatePlans }) => {
-    // console.log(selectedRoom);
     console.log(selectedRatePlans);
     return(
         <Wrapper>
@@ -114,7 +119,6 @@ const RoomDetails: FC<Props> = ({ selectedRoom, selectedRatePlans }) => {
                     </div>
                 </section>
             )}
-            
         </Wrapper>
     );
 };
@@ -189,7 +193,6 @@ const Wrapper = styled.div`
             .item {
                 width: 49%;
                 height: 3rem;
-                // background-color: #9dc997;
                 background-color: #FFF;
                 border-radius: 3px;
                 overflow-y: scroll;

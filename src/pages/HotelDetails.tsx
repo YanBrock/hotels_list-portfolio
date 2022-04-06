@@ -1,11 +1,12 @@
-import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { FC, useState, useEffect } from "react"
+import { Link } from "react-router-dom";
 
 //Materials
 import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button"
 import { MdArrowBackIos } from "react-icons/md";
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import '@splidejs/splide/dist/css/splide.min.css';
 
 //Styles
 import styled from "styled-components";
@@ -21,22 +22,16 @@ type Props = {
     selectedHotel: HotelInterface,
     setSelectedRoom: (arg: RoomInterface) => void,
     adults: number,
-    setAdults: (arg: number) => void,
     children: number,
-    setChildren: (arg: number) => void;
     setSelectedRatePlans: any
-    selectedRatePlans: any
 };
 
 const HotelDetails: FC<Props> = ({ 
     selectedHotel, 
     setSelectedRoom, 
-    adults, 
-    setAdults,
+    adults,
     children,
-    setChildren,
     setSelectedRatePlans,
-    selectedRatePlans,
 }) => {
 
     const [hotelRooms, setHotelRooms] = useState<any>({});
@@ -194,7 +189,6 @@ const HotelDetails: FC<Props> = ({
                                     occupancy={room.occupancy}
                                     longDescription={room.longDescription}
                                     disabledAccess={room.disabledAccess}
-                                    selectedRatePlans={selectedRatePlans}
                                 />
                             </LinkStyled>
                         )
@@ -257,12 +251,6 @@ const Wrapper = styled.div`
                 width: 100%;
             }
 
-            // @media only screen
-            // and (min-width: 1024px)
-            // and (max-width: 1440px) {
-            //     min-width: 48%;
-            // }
-
             .description {
                 margin-bottom: 1rem;
             }
@@ -281,7 +269,6 @@ const Wrapper = styled.div`
                 .item {
                     width: 49%;
                     height: 3rem;
-                    // background-color: #9dc997;
                     background-color: #FFF;
                     border-radius: 3px;
                     overflow-y: scroll;
@@ -349,8 +336,6 @@ const Wrapper = styled.div`
 
         &_rooms {
             width: 100%;
-            // height: 40rem;
-            // overflow-y: scroll;
             padding: .5rem;
         }
     }

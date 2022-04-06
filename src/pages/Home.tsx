@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
-import styled from "styled-components";
+
+//Components
 import Hotel from "../components/Hotel";
 
 //Interface
@@ -9,9 +10,7 @@ import RoomsInterface from "../interfaces/RoomInterface"
 type Props = {
   rating: number,
   adults: number,
-  setAdults: (arg: number) => void,
   children: number,
-  setChildren: (arg: number) => void;
   setSelectedHotel: (arg: HotelInterface) => void,
   setSelectedRoom: (arg: RoomsInterface) => void,
   setSelectedRatePlans: any,
@@ -22,9 +21,7 @@ type Props = {
 const Home: FC<Props> = ({
   rating,
   adults,
-  setAdults,
   children,
-  setChildren,
   setSelectedHotel,
   setSelectedRoom,
   setSelectedRatePlans,
@@ -38,7 +35,6 @@ const Home: FC<Props> = ({
   const getHotels = async () => {
     const api = await fetch("https://obmng.dbm.guestline.net/api/hotels?collection-id=OBMNG");
     const data = await api.json();
-    // console.log(data);
     setAllHotels(data);
     setFilteredHotels(data);
     getHotelsImages(data);
@@ -70,7 +66,6 @@ const Home: FC<Props> = ({
   return(
     <div>
         {filteredHotels.map((hotel: HotelInterface) => {
-          // console.log(hotel);
           return(
             <Hotel
               key={hotel.id}

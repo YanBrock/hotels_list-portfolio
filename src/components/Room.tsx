@@ -1,6 +1,6 @@
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import { FC, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { FC } from "react";
+
+//Styles
 import styled from "styled-components";
 
 type Props = {
@@ -9,12 +9,9 @@ type Props = {
     occupancy: {maxAdults: number, maxChildren: number},
     longDescription: string,
     disabledAccess: boolean,
-    selectedRatePlans: any,
 }
 
-
-const Room: FC<Props> = ( {id, name, occupancy, longDescription, disabledAccess, selectedRatePlans} ) => {
-// console.log(selectedRatePlans);
+const Room: FC<Props> = ( {id, name, occupancy, longDescription, disabledAccess} ) => {
 
     return(
         <Wrapper>
@@ -134,11 +131,6 @@ const Wrapper = styled.div`
             }
         }
     }
-`;
-
-const SplideStyled = styled(Splide)`
-//   max-width: 15rem;
-//   margin: 1rem 1rem 0 1rem;
 `;
 
 export default Room;

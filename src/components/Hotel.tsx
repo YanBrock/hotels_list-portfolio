@@ -1,10 +1,10 @@
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import '@splidejs/splide/dist/css/splide.min.css';
 import { FC, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 //Materials
 import { FaStar } from "react-icons/fa";
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import '@splidejs/splide/dist/css/splide.min.css';
 
 //Styles
 import styled from "styled-components";
@@ -112,8 +112,6 @@ const Hotel: FC<Props> = ({
                     </div>
                 </div>
 
-                {/* <h2 className="roomsTitle">{hotel.name} Rooms</h2> */}
-
                 <div className="hotelRooms">
                     {filteredRooms.map((room: RoomInterface, i: number) => {
                         return(
@@ -124,7 +122,6 @@ const Hotel: FC<Props> = ({
                                     occupancy={room.occupancy}
                                     longDescription={room.longDescription}
                                     disabledAccess={room.disabledAccess}
-                                    selectedRatePlans={selectedRatePlans}
                                 />
                             </LinkStyled>
                         );
@@ -220,12 +217,6 @@ const Card = styled.div`
             }
         }
     }
-
-    // .roomsTitle {
-    //     display: flex;
-    //     width: 100%;
-    //     justify-content: center;
-    // }
 
     .hotelRooms {
         height: 70%;
